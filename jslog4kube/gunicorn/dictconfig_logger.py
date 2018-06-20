@@ -66,6 +66,7 @@ class GunicornLogger(Logger):
                       "Python 2.7 or above.")
 
         if dictConfig and cfg.logconfig_dict:
+            print("using dict")
             config = LOGGING.copy()
             config.update(cfg.logconfig_dict)
             try:
@@ -78,6 +79,7 @@ class GunicornLogger(Logger):
             ) as exc:
                 raise RuntimeError(str(exc))
         elif cfg.logconfig:
+            print("using file")
             if os.path.exists(cfg.logconfig):
                 defaults = LOGGING.copy()
                 defaults['__file__'] = cfg.logconfig
