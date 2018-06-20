@@ -90,7 +90,7 @@ LOGGING = {
     },
     'filters': {
         'default': {
-            '()': 'jslog4kube.KubeMetaInject',
+            'class': 'jslog4kube.KubeMetaInject',
         },
     },
     'handlers': {
