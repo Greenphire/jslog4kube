@@ -66,10 +66,10 @@ class GunicornLogger(Logger):
                       "Python 2.7 or above.")
 
         if dictConfig and cfg.logconfig_dict:
-            config = CONFIG_DEFAULTS.copy()
+            config = LOGGING.copy()
             config.update(cfg.logconfig_dict)
             try:
-                dictConfig(LOGGING)
+                dictConfig(config)
             except (
                     AttributeError,
                     ImportError,
@@ -79,7 +79,7 @@ class GunicornLogger(Logger):
                 raise RuntimeError(str(exc))
         elif cfg.logconfig:
             if os.path.exists(cfg.logconfig):
-                defaults = CONFIG_DEFAULTS.copy()
+                defaults = LOGGING.copy()
                 defaults['__file__'] = cfg.logconfig
                 defaults['here'] = os.path.dirname(cfg.logconfig)
                 fileConfig(cfg.logconfig, defaults=defaults,
