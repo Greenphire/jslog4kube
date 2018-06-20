@@ -69,7 +69,7 @@ class GunicornLogger(Logger):
             config = LOGGING.copy()
             config.update(cfg.logconfig_dict)
             try:
-                dictConfig(config)
+                dictConfig(LOGGING)
             except (
                     AttributeError,
                     ImportError,
