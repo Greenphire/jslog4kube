@@ -65,4 +65,27 @@ class GunicornLogger(Logger):
             util.warn("Dictionary-based log configuration requires "
                       "Python 2.7 or above.")
 
+        if dictConfig and cfg.logconfig_dict:
+            config = CONFIG_DEFAULTS.copy()
+            config.update(cfg.logconfig_dict)
+            try:
+                dictConfig(LOGGING)
+            except (
+                    AttributeError,
+                    ImportError,
+                    ValueError,
+                    TypeError
+            ) as exc:
+                raise RuntimeError(str(exc))
+        elif cfg.logconfig:
+            if os.path.exists(cfg.logconfig):
+                defaults = CONFIG_DEFAULTS.copy()
+                defaults['__file__'] = cfg.logconfig
+                defaults['here'] = os.path.dirname(cfg.logconfig)
+                fileConfig(cfg.logconfig, defaults=defaults,
+                           disable_existing_loggers=False)
+            else:
+                msg = "Error: log config '%s' not found"
+                raise RuntimeError(msg % cfg.logconfig)
+
         dictConfig(LOGGING)
