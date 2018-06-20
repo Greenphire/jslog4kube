@@ -87,5 +87,3 @@ class GunicornLogger(Logger):
             else:
                 msg = "Error: log config '%s' not found"
                 raise RuntimeError(msg % cfg.logconfig)
-
-        dictConfig(LOGGING)
