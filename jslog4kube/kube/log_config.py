@@ -29,47 +29,6 @@ from .. import format_str
 
 DATEFORMAT = '%Y-%m-%dT%H:%M:%S,%03d'
 
-CONFIG_DEFAULTS = dict(
-        version=1,
-        disable_existing_loggers=False,
-
-        loggers={
-            "root": {"level": "INFO", "handlers": ["console"]},
-            "gunicorn.error": {
-                "level": "INFO",
-                "handlers": ["error_console"],
-                "propagate": True,
-                "qualname": "gunicorn.error"
-            },
-
-            "gunicorn.access": {
-                "level": "INFO",
-                "handlers": ["console"],
-                "propagate": True,
-                "qualname": "gunicorn.access"
-            }
-        },
-        handlers={
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "generic",
-                "stream": "ext://sys.stdout"
-            },
-            "error_console": {
-                "class": "logging.StreamHandler",
-                "formatter": "generic",
-                "stream": "ext://sys.stderr"
-            },
-        },
-        formatters={
-            "generic": {
-                "format": "%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
-                "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
-                "class": "logging.Formatter"
-            }
-        }
-)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -90,7 +49,7 @@ LOGGING = {
     },
     'filters': {
         'default': {
-            'class': 'jslog4kube.KubeMetaInject',
+            '()': 'jslog4kube.KubeMetaInject',
         },
     },
     'handlers': {

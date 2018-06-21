@@ -49,45 +49,16 @@ class GunicornLogger(Logger):
         # set gunicorn.access handler
         if cfg.accesslog is not None:
             self._set_handler(self.access_log, cfg.accesslog,
-                fmt=logging.Formatter(self.access_fmt), stream=sys.stdout)
+                              fmt=logging.Formatter(self.access_fmt),
+                              stream=sys.stdout)
 
         # set syslog handler
         if cfg.syslog:
             self._set_syslog_handler(
                 self.error_log, cfg, self.syslog_fmt, "error"
             )
-            if not cfg.disable_redirect_access_to_syslog:
-                self._set_syslog_handler(
-                    self.access_log, cfg, self.syslog_fmt, "access"
-                )
-
-        if dictConfig is None and cfg.logconfig_dict:
-            util.warn("Dictionary-based log configuration requires "
-                      "Python 2.7 or above.")
-
-        if dictConfig and cfg.logconfig_dict:
-            print("using dict")
-            config = LOGGING.copy()
-            config.update(cfg.logconfig_dict)
-            try:
-                dictConfig(LOGGING)
-            except (
-                    AttributeError,
-                    ImportError,
-                    ValueError,
-                    TypeError
-            ) as exc:
-                raise RuntimeError(str(exc))
-        elif cfg.logconfig:
-            print("using file")
-            if os.path.exists(cfg.logconfig):
-                defaults = LOGGING.copy()
-                defaults['__file__'] = cfg.logconfig
-                defaults['here'] = os.path.dirname(cfg.logconfig)
-                fileConfig(cfg.logconfig, defaults=defaults,
-                           disable_existing_loggers=False)
-            else:
-                msg = "Error: log config '%s' not found"
-                raise RuntimeError(msg % cfg.logconfig)
+            self._set_syslog_handler(
+                self.access_log, cfg, self.syslog_fmt, "access"
+            )
 
         dictConfig(LOGGING)
