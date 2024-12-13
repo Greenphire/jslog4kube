@@ -12,6 +12,6 @@ setup(name='jslog4kube',
                 'jslog4kube.kube',
                 'jslog4kube.gunicorn'],
       install_requires=[
-          'python-json-logger',
+          'python-json-logger==2.0.7',
       ],
       zip_safe=False)
